@@ -37,9 +37,35 @@ x_test <- read.table("./test/X_test.txt")
 y_test <- read.table("./test/y_test.txt")
 subject_test <- read.table("./test/subject_test.txt")
 
+#Bind tables:
+x_merged <- rbind(x_train, x_test)
+y_merged <- rbind(y_train, y_test)
+subject_merged <- rbind(subject_train, subject_test)
 
 
 
+#Set columns names
+feature_columns <- read.table('features.txt')
+activity_labels <- read.table('activity_labels.txt')
+
+
+colnames(x_merged)<-feature_columns$V2
+colnames(y_merged)<-"Activity"
+colnames(subject_merged)<-"Subject"
+
+#small check
+x.row <- nrow(x_merged)
+y.row <- nrow(y_merged)
+
+if(x.row != y.row){
+  print("No equal number of rows")}
+
+
+
+##Final data merge
+
+temp.variable <- cbind( x_merged, y_merged)
+dataset <- cbind(temp.variable, subject_merged)
 
 
 #########################
