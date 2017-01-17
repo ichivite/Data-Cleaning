@@ -4,12 +4,12 @@ library(dplyr)
 #name of the new folder
 folder <- "./get_and_cleaning_data_week_4"
 
-#check and create folder
+#check if folder exists and if it doesn't, create new folder
 
 if(!file.exists(folder)){
   dir.create(folder)}
 
-#download data
+#download data from given URL
 
 data.url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 
@@ -53,7 +53,7 @@ colnames(x_merged)<-feature_columns$V2
 colnames(y_merged)<-"Activity"
 colnames(subject_merged)<-"Subject"
 
-#small check
+#small check on the number of rows
 x.row <- nrow(x_merged)
 y.row <- nrow(y_merged)
 
@@ -97,8 +97,8 @@ data.total <- cbind(x_merged, y_merged, subject_merged)
 ############################
 
 step5 <- aggregate(. ~subject + Activity, data.total, mean)
-step5 <- mean_data[order(mean_data$subject_id,mean_data$Activity_names),]
+step5 <- mean_data[ order (mean_data$subject, mean_data$Activity),]
 write.table(step5, file = "mean_data.txt",row.name=FALSE)
 
 
-
+step5 <- aggregate(data.total, . ~subject + Activity, mean)
