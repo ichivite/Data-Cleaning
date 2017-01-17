@@ -96,9 +96,6 @@ data.total <- cbind(x_merged, y_merged, subject_merged)
 ##5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 ############################
 
-step5 <- aggregate(. ~Subject + activity_labels, data.total, mean)
-step5 <- mean_data[ order (mean_data$Subject, mean_data$activity_labels),]
+step5 <- aggregate(. ~Subject + activity, data.total, mean)
+step5 <- step5[ order (step5$Subject, step5$activity),]
 write.table(step5, file = "mean_data.txt",row.name=FALSE)
-
-
-step5 <- aggregate(data.total, . ~subject + Activity, mean)
