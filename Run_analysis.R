@@ -17,7 +17,7 @@ download.file(data.url,destfile="./get_and_cleaning_data_week_4/data.zip",method
 
 unzip(zipfile="./get_and_cleaning_data_week_4/data.zip",exdir="./get_and_cleaning_data_week_4")
 
-#Set new working directory, make sit easier to work
+#Set new working directory, makes it easier to work
 setwd("C:/Users/IÑIGO/Documents/coursera/get_and_cleaning_data_week_4/UCI HAR Dataset")
 
 #########################
@@ -44,7 +44,7 @@ subject_merged <- rbind(subject_train, subject_test)
 
 
 
-#Set columns names
+#Set column names
 feature_columns <- read.table('features.txt')
 activity_labels <- read.table('activity_labels.txt')
 
@@ -72,24 +72,33 @@ dataset <- cbind(temp.variable, subject_merged)
 ##2. Extracts only the measurements on the mean and standard deviation for each measurement.
 ############################
 
+mean_stdv.dataset <- dataset[grep("mean\\(\\)|std\\(\\)", colnames(dataset))]
+
+
 
 #########################
 ##3. Uses descriptive activity names to name the activities in the data set
 ############################
-
-
-
-
+activity_labels <- read.table('activity_labels.txt')### also done in step 1, so dataset had colums names
+y_merged[, 1] <- activity_labels[y_merged[, 1], 2]
+colnames(y_merged) <- "activity" ### also done in step 1, so dataset had colums names
 
 
 #########################
 ##4. Appropriately labels the data set with descriptive variable names.
 ############################
 
+colnames(dataset) <- "subject"
 
+data.total <- cbind(x_merged, y_merged, subject_merged)
 
 #########################
 ##5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 ############################
+
+step5 <- aggregate(. ~subject + Activity, data.total, mean)
+step5 <- mean_data[order(mean_data$subject_id,mean_data$Activity_names),]
+write.table(step5, file = "mean_data.txt",row.name=FALSE)
+
 
 
